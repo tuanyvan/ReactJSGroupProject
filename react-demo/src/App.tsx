@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState, useContext, useLayoutEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -30,6 +30,15 @@ function FormComponent() {
 
   const [name, setName] = useState("N/A");
   const [state, dispatch] = useReducer(numberReducer, numberState);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setMessage("Please edit the fields to the left to get started!");
+  }, []);
+
+  useLayoutEffect(() => {
+    setMessage(`Hi ${name}! Your number is #${state.number}.`)
+  }, [name, state.number]);
 
   return (
     <div className="d-flex flex-row p-4">
@@ -45,7 +54,7 @@ function FormComponent() {
           <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.INCREASE})}>+</button>
         </div>
       </div>
-      <div className='col-4 border'></div>
+      <div className='col-4 border'>{message}</div>
     </div>
   )
 }
