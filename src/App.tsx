@@ -1,17 +1,19 @@
+import React from "react";
 import "./App.css";
 
 function FormComponent() {
+
   return (
     <div className="d-flex flex-row p-4">
       <div className="col-8">
         <div className="col-12">
-          <label className="col-3" for="name">
+          <label className="col-3" htmlFor="name">
             Name
           </label>
           <input type="text" id="name" name="name"></input>
         </div>
         <div className="col-12">
-          <label className="col-3" for="number">
+          <label className="col-3" htmlFor="number">
             Number
           </label>
           <button className="btn btn-primary">-</button>
