@@ -1,10 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+const numberState = {
+  number: 0
+}
+
+enum NumberActionKind {
+  INCREASE = 'INCREASE',
+  DECREASE = 'DECREASE'
+}
+
+interface NumberAction {
+  type: NumberActionKind;
+}
+
+function numberReducer(state: typeof numberState, action: NumberAction): typeof numberState {
+  switch (action.type) {
+    case NumberActionKind.INCREASE:
+      return {...state, number: state.number + 1 }
+    case NumberActionKind.DECREASE:
+      return {...state, number: state.number - 1}
+    default:
+      throw new Error()
+  }
+}
 
 function FormComponent() {
 
   const [name, setName] = useState("N/A");
+  const [state, dispatch] = useReducer(numberReducer, numberState);
 
   return (
     <div className="d-flex flex-row p-4">
@@ -15,9 +40,9 @@ function FormComponent() {
         </div>
         <div className='col-12'>
           <label className="col-3" htmlFor="name">Number</label>
-          <button className="btn btn-primary">-</button>
-          <input type='number' disabled></input>
-          <button className="btn btn-primary">+</button>
+          <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.DECREASE})}>-</button>
+          <input type='number' disabled value={state.number}></input>
+          <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.INCREASE})}>+</button>
         </div>
       </div>
       <div className='col-4 border'></div>
