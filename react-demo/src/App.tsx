@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useContext, useLayoutEffect } from 'react';
+import React, { useEffect, useReducer, useState, createContext, useLayoutEffect, useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -26,6 +26,16 @@ function numberReducer(state: typeof numberState, action: NumberAction): typeof 
   }
 }
 
+interface FormContextData {
+  name: string,
+  number: number
+}
+
+const FormContext = createContext<FormContextData>({
+  name: "N/A",
+  number: 0
+})
+
 function FormComponent() {
 
   const [name, setName] = useState("N/A");
@@ -41,20 +51,38 @@ function FormComponent() {
   }, [name, state.number]);
 
   return (
-    <div className="d-flex flex-row p-4">
-      <div className='col-8'>
-        <div className='col-12'>
-          <label className="col-3" htmlFor="name">Name</label>
-          <input type='text' value={name} onChange={e => setName(e.target.value)}></input>
+    <main>
+      <div className="d-flex flex-row p-4">
+        <div className='col-8'>
+          <div className='col-12'>
+            <label className="col-3" htmlFor="name">Name</label>
+            <input type='text' value={name} onChange={e => setName(e.target.value)}></input>
+          </div>
+          <div className='col-12'>
+            <label className="col-3" htmlFor="name">Number</label>
+            <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.DECREASE})}>-</button>
+            <input type='number' disabled value={state.number}></input>
+            <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.INCREASE})}>+</button>
+          </div>
         </div>
-        <div className='col-12'>
-          <label className="col-3" htmlFor="name">Number</label>
-          <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.DECREASE})}>-</button>
-          <input type='number' disabled value={state.number}></input>
-          <button className="btn btn-primary" onClick={() => dispatch({ type: NumberActionKind.INCREASE})}>+</button>
-        </div>
+        <div className='col-4 border'>{message}</div>
       </div>
-      <div className='col-4 border'>{message}</div>
+      <FormContext.Provider value={{name, number: state.number}}>
+        <DisplayComponent />
+      </FormContext.Provider>
+    </main>
+  )
+}
+
+function DisplayComponent() {
+
+  const state = useContext(FormContext);
+
+  return (
+    <div className='border p-4 m-4'>
+      <h1>Name: {state.name}</h1>
+      <h2>Number: {state.number}</h2>
+      <h4>Trivia: </h4>
     </div>
   )
 }
