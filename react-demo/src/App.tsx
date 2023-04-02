@@ -77,12 +77,25 @@ function FormComponent() {
 function DisplayComponent() {
 
   const state = useContext(FormContext);
+  const [triviaMessage, setTriviaMessage] = useState("");
+
+  useEffect(() => {
+    // Handle API call to http://numbersapi.com.
+    fetch(`http://numbersapi.com/${state.number}`)
+    .then(async response => {
+      setTriviaMessage(await response.text())
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
+  }, [state.number])
 
   return (
     <div className='border p-4 m-4'>
       <h1>Name: {state.name}</h1>
       <h2>Number: {state.number}</h2>
-      <h4>Trivia: </h4>
+      <h4>Trivia: {triviaMessage}</h4>
     </div>
   )
 }
