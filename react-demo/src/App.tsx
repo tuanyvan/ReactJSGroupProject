@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useState, createContext, useLayoutEffect, useContext } from 'react';
-import logo from './logo.svg';
+import { useEffect, useReducer, useState, createContext, useLayoutEffect, useContext } from 'react';
 import './App.css';
 
 const numberState = {
@@ -68,13 +67,13 @@ function FormComponent() {
         <div className='col-4 border'>{message}</div>
       </div>
       <FormContext.Provider value={{name, number: state.number}}>
-        <DisplayComponent />
+        <DisplayComponent title={'This is a test prop.'} />
       </FormContext.Provider>
     </main>
   )
 }
 
-function DisplayComponent() {
+function DisplayComponent(props: {title: string}) {
 
   const state = useContext(FormContext);
   const [triviaMessage, setTriviaMessage] = useState("");
@@ -95,6 +94,7 @@ function DisplayComponent() {
     <div className='border p-4 m-4'>
       <h1>Name: {state.name}</h1>
       <h2>Number: {state.number}</h2>
+      <h3>{props.title}</h3>
       <h4>Trivia: {triviaMessage}</h4>
     </div>
   )
