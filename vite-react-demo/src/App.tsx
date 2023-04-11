@@ -68,13 +68,13 @@ function FormComponent() {
         <div className='col-4 border'>{message}</div>
       </div>
       <FormContext.Provider value={{ name: name, number: state.number }}>
-        <DisplayComponent />
+        <DisplayComponent title={'HELLO!'} />
       </FormContext.Provider>
     </main>
   )
 }
 
-function DisplayComponent() {
+function DisplayComponent(props: { title: string }) {
   const state = useContext(FormContext)
 
   const [triviaMessage, setTriviaMessage] = useState("");
@@ -92,6 +92,7 @@ function DisplayComponent() {
 
   return (
     <div className='border p-4 m-4'>
+      <h1>{props.title}</h1>
       <h1>Name: {state.name}</h1>
       <h2>Number: {state.number}</h2>
       <h4>Trivia: {triviaMessage}</h4>
